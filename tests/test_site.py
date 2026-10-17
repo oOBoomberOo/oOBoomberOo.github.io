@@ -102,6 +102,9 @@ class SiteDataTest(unittest.TestCase):
 
         self.assertEqual(mod["id"], "seamless-dimensions")
         self.assertEqual(mod["name"], "Seamless Dimensions")
+        self.assertEqual(mod["summary"], "No loading screen when you change dimension.")
+        self.assertIn("Nether portal", mod["description"])
+        self.assertIn("starry void", mod["description"])
         self.assertFalse(mod.get("source"))
         self.assertEqual(mod.get("images") or [], [])
         self.assertFalse(mod.get("upcoming"))
@@ -110,12 +113,28 @@ class SiteDataTest(unittest.TestCase):
         release = releases[0]
         self.assertEqual(release["version"], "1.0.0")
         self.assertEqual(release["date"], "2026-10-17")
-        changelog = " ".join(release["changelog"]).lower()
-        for phrase in ("loading screen", "nether", "end", "starfield", "facing"):
-            self.assertIn(phrase, changelog)
-        self.assertIn("1.21.1", release["note"])
-        self.assertIn("Sodium", release["note"])
-        self.assertIn("Iris", release["note"])
+        self.assertEqual(
+            release["changelog"],
+            [
+                "First release.",
+                "No loading screen when going through Nether and End portals.",
+                "Falling into the End portal now shows the starry void.",
+                "Works with /tp between dimensions too.",
+            ],
+        )
+        self.assertEqual(release["note"], "Not tested with Sodium or Iris yet.")
+        player_copy = mod["description"] + " " + " ".join(release["changelog"]) + " " + release["note"]
+        for phrase in (
+            "in the background",
+            "facing",
+            "rotation",
+            "starfield",
+            "mesh",
+            "preload",
+            "tether",
+            "renderer",
+        ):
+            self.assertNotIn(phrase, player_copy.lower())
 
         expected = {
             ("26.3", "Fabric"): {
@@ -208,9 +227,15 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("Fabric API", mod)
         self.assertIn("1.21.1", mod)
         self.assertIn("NeoForge", mod)
-        self.assertIn("starfield", mod)
+        self.assertIn("Walk through a Nether portal", mod)
+        self.assertIn("starry void", mod)
+        self.assertIn("First release.", mod)
+        self.assertIn("Works with /tp between dimensions too.", mod)
         self.assertIn("2026-10-17", mod)
-        self.assertIn("Sodium and Iris have not been tested with the 1.21.1 jars yet.", mod)
+        self.assertIn("Not tested with Sodium or Iris yet.", mod)
+        self.assertNotIn("in the background", mod.lower())
+        self.assertNotIn("facing", mod.lower())
+        self.assertIn("No loading screen when you change dimension.", mods)
         self.assertIn("Fabric Loader 0.20.0 or newer", mod)
         self.assertIn("Fabric Loader 0.16.14 or newer", mod)
         self.assertIn("Java 25 or newer", mod)

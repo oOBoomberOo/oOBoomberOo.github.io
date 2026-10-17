@@ -1,10 +1,8 @@
 id: seamless-dimensions
 name: Seamless Dimensions
-summary: Removes the loading screen when you change dimension.
+summary: No loading screen when you change dimension.
 # Leave blank when the repository should not be linked.
 source: ""
 images: []
 description: |
-  Seamless Dimensions removes the loading screen when you change dimension. The destination world loads in the background, so Nether and End portals take you straight through with no wait.
-
-  Entering the End drops you through the portal's starfield until the island has loaded. The direction you are facing is kept.
+  Walk through a Nether portal and you're on the other side straight away, no loading screen. Jumping into an End portal drops you through the starry void and onto the island.

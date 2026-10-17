@@ -2,7 +2,7 @@
 
 Personal site for Boomber. GitHub Pages builds it with Jekyll. There is no separate build step.
 
-The site currently has two entries: the Seamless Dimensions mod, and Waypoint on the projects page. Both lists grow by adding data, not by editing the layout.
+The site lists Seamless Dimensions and Waypoint. Add more by adding data, not by editing the layout.
 
 ## Add a release
 

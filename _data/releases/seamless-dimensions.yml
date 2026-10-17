@@ -5,12 +5,12 @@
 # Leave a download empty only when that jar is not ready. Do not invent checksums or sizes.
 - version: "1.0.0"
   date: "2026-10-17"
-  note: Sodium and Iris have not been tested with the 1.21.1 jars yet.
+  note: Not tested with Sodium or Iris yet.
   changelog:
-    - The destination world loads in the background, so changing dimension does not show the loading screen.
-    - Nether and End portals take you straight through.
-    - Entering the End drops you through the portal starfield until the island has loaded.
-    - The direction you are facing is kept.
+    - First release.
+    - No loading screen when going through Nether and End portals.
+    - Falling into the End portal now shows the starry void.
+    - Works with /tp between dimensions too.
   files:
     - minecraft: "26.3"
       loader: Fabric
