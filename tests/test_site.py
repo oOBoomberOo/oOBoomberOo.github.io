@@ -208,6 +208,15 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn('href="/mods/"', home)
         self.assertIn('href="/projects/"', home)
         self.assertIn("contact@boomber.xyz", home)
+        self.assertIn("<title>Boomber's Projects</title>", home)
+        self.assertIn(">Boomber's Projects</a>", home)
+        self.assertIn("<h1>About Me</h1>", home)
+        self.assertIn(
+            "Hi, I'm Boomber. I make minecraft mods and random websites for my personal use.",
+            home,
+        )
+        self.assertNotIn('class="mark"', home)
+        self.assertIn("<title>Mods · Boomber's Projects</title>", mods)
         self.assertIn('href="/mods/seamless-dimensions/"', mods)
         self.assertIn("Seamless Dimensions", mods)
 

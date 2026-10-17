@@ -8,9 +8,9 @@
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#f3eee4">
   {% if page.url == "/" %}
-  <title>Boomber</title>
+  <title>{{ site.title }}</title>
   {% else %}
-  <title>{{ page.title }} · Boomber</title>
+  <title>{{ page.title }} · {{ site.title }}</title>
   {% endif %}
   {% if page.description %}
   <meta name="description" content="{{ page.description }}">
@@ -25,7 +25,7 @@
   <a class="skip" href="#content">Skip to content</a>
   <div class="wrap">
     <header class="site-header">
-      <p class="site-name"><a href="{{ '/' | relative_url }}">Boomber</a></p>
+      <p class="site-name"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></p>
       <nav aria-label="Site">
         <a href="{{ '/' | relative_url }}"{% if page.url == "/" %} aria-current="page"{% endif %}>Home</a>
         <a href="{{ '/mods/' | relative_url }}"{% if page.url contains "/mods/" %} aria-current="page"{% endif %}>Mods</a>
@@ -36,7 +36,6 @@
       {{ content }}
     </main>
     <footer class="site-footer">
-      <p class="mark">Boomber</p>
       <p><a href="mailto:contact@boomber.xyz">contact@boomber.xyz</a></p>
     </footer>
   </div>

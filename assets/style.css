@@ -388,12 +388,6 @@ figcaption {
   margin: 0;
 }
 
-.site-footer .mark {
-  color: var(--ink);
-  font-variant: small-caps;
-  letter-spacing: 0.14em;
-}
-
 @media (max-width: 36rem) {
   body {
     font-size: 1.0625rem;
