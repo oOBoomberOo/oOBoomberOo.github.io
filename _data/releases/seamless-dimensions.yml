@@ -1,0 +1,20 @@
+# Newest release first. To publish another one, add an entry above this list.
+# Leave download, sha256, file_size, and date blank until you have the real file.
+# download is a site path such as /files/seamless-dimensions/name.jar, or a full URL.
+# sha256 is the file's hex digest. file_size is the size in bytes. date is YYYY-MM-DD.
+- version: "1.0.0"
+  minecraft:
+    - "26.3"
+  loaders:
+    - Fabric
+  requirements:
+    - Fabric API
+  download: ""
+  sha256: ""
+  file_size: ""
+  date: ""
+  changelog:
+    - The destination world loads in the background, so changing dimension does not show the loading screen.
+    - Nether and End portals take you straight through.
+    - Entering the End drops you through the portal starfield until the island has loaded.
+    - The direction you are facing is kept.

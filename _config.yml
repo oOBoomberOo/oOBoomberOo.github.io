@@ -1,0 +1,11 @@
+title: Boomber
+url: "https://oOBoomberOo.github.io"
+baseurl: ""
+markdown: kramdown
+exclude:
+  - README.md
+  - tests
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - .gitignore

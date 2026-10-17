@@ -1,0 +1,38 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  {% if page.url == "/" %}
+  <title>Boomber</title>
+  {% else %}
+  <title>{{ page.title }} · Boomber</title>
+  {% endif %}
+  {% if page.description %}
+  <meta name="description" content="{{ page.description }}">
+  {% endif %}
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <div class="wrap">
+    <header>
+      <p class="site-name"><a href="{{ '/' | relative_url }}">Boomber</a></p>
+      <nav aria-label="Site">
+        <a href="{{ '/' | relative_url }}"{% if page.url == "/" %} aria-current="page"{% endif %}>Home</a>
+        <a href="{{ '/mods/' | relative_url }}"{% if page.url contains "/mods/" %} aria-current="page"{% endif %}>Mods</a>
+        <a href="{{ '/projects/' | relative_url }}"{% if page.url contains "/projects/" %} aria-current="page"{% endif %}>Projects</a>
+      </nav>
+    </header>
+    <main id="content" tabindex="-1">
+      {{ content }}
+    </main>
+    <footer>
+      <p><a href="mailto:contact@boomber.xyz">contact@boomber.xyz</a></p>
+    </footer>
+  </div>
+</body>
+</html>

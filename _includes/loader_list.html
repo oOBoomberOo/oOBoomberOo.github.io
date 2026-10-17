@@ -1,0 +1,5 @@
+{%- if include.loaders.size == 2 -%}
+{{ include.loaders[0] }} and {{ include.loaders[1] }}
+{%- else -%}
+{{ include.loaders | join: ", " }}
+{%- endif -%}

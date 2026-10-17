@@ -1,0 +1,20 @@
+---
+layout: default
+title: Mods
+description: Minecraft mods by Boomber.
+permalink: /mods/
+---
+<h1>Mods</h1>
+<p>These are the mods I publish here. Each mod has a page for its versions and releases.</p>
+<ul class="listing">
+  {% for item in site.data.mods %}
+  {% assign mod = item[1] %}
+  <li>
+    {% capture mod_url %}/mods/{{ mod.id }}/{% endcapture %}
+    <a href="{{ mod_url | relative_url }}">{{ mod.name }}</a>
+    {% if mod.summary.size > 0 %}
+    <p>{{ mod.summary }}</p>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>

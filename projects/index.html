@@ -1,0 +1,18 @@
+---
+layout: default
+title: Projects
+description: Other projects by Boomber.
+permalink: /projects/
+---
+<h1>Projects</h1>
+<p>Other things I've made.</p>
+<ul class="listing">
+  {% for project in site.data.projects %}
+  <li>
+    <a href="{{ project.url }}">{{ project.name }}</a>
+    {% if project.summary.size > 0 %}
+    <p>{{ project.summary }}</p>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>

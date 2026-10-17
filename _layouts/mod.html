@@ -1,0 +1,87 @@
+---
+layout: default
+---
+{% assign mod = site.data.mods[page.mod_id] %}
+{% assign releases = site.data.releases[page.mod_id] %}
+{% if mod.name %}
+<article>
+  <h1>{{ mod.name }}</h1>
+  {{ mod.description | markdownify }}
+  {% capture source %}{{ mod.source }}{% endcapture %}
+  {% if source.size > 0 %}
+  <p><a href="{{ source }}">Source</a></p>
+  {% endif %}
+  {% for image in mod.images %}
+  <figure>
+    <img src="{{ image.src | relative_url }}" alt="{{ image.alt }}">
+    {% if image.caption.size > 0 %}
+    <figcaption>{{ image.caption }}</figcaption>
+    {% endif %}
+  </figure>
+  {% endfor %}
+
+  <h2>Supported versions</h2>
+  <ul>
+    {% for release in releases %}
+    <li>
+      {{ release.version }}: Minecraft {{ release.minecraft | join: ", " }},
+      {% include loader_list.html loaders=release.loaders %}.
+      {% if release.requirements.size > 0 %}
+      Requires {{ release.requirements | join: ", " }}.
+      {% endif %}
+    </li>
+    {% endfor %}
+    {% for item in mod.upcoming %}
+    <li>Minecraft {{ item.minecraft }} for {% include loader_list.html loaders=item.loaders %} is on the way.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Releases</h2>
+  {% for release in releases %}
+  <section class="release">
+    <h3>{{ release.version }}</h3>
+    <p><strong>Minecraft:</strong> {{ release.minecraft | join: ", " }}</p>
+    {% if release.loaders.size == 1 %}
+    <p><strong>Loader:</strong> {{ release.loaders[0] }}</p>
+    {% else %}
+    <p><strong>Loaders:</strong> {% include loader_list.html loaders=release.loaders %}</p>
+    {% endif %}
+    {% if release.requirements.size > 0 %}
+    <p><strong>Requires:</strong> {{ release.requirements | join: ", " }}</p>
+    {% endif %}
+    {% capture download %}{{ release.download }}{% endcapture %}
+    {% if download.size > 0 %}
+    {% assign href = download %}
+    {% unless href contains "://" %}
+      {% assign href = href | relative_url %}
+    {% endunless %}
+    <p><strong>Download:</strong> <a href="{{ href }}">{{ download | split: "/" | last }}</a></p>
+    {% capture file_size %}{{ release.file_size }}{% endcapture %}
+    {% if file_size.size > 0 %}
+    <p><strong>File size:</strong> {{ file_size }} bytes</p>
+    {% endif %}
+    {% capture sha256 %}{{ release.sha256 }}{% endcapture %}
+    {% if sha256.size > 0 %}
+    <p><strong>SHA-256:</strong> <code>{{ sha256 }}</code></p>
+    {% endif %}
+    {% capture released_on %}{{ release.date }}{% endcapture %}
+    {% if released_on.size > 0 %}
+    <p><strong>Date:</strong> <time datetime="{{ released_on }}">{{ released_on }}</time></p>
+    {% endif %}
+    {% else %}
+    <p><strong>Download:</strong> <span class="missing">The jar is not uploaded yet.</span></p>
+    {% endif %}
+    {% if release.changelog.size > 0 %}
+    <h4>Changelog</h4>
+    <ul>
+      {% for note in release.changelog %}
+      <li>{{ note }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
+  {% endfor %}
+</article>
+{% else %}
+<p>This page has no mod data yet.</p>
+{% endif %}
