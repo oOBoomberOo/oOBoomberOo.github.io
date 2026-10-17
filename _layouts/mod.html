@@ -6,28 +6,7 @@ layout: default
 {% assign latest = releases | first %}
 {% if mod.name %}
 <article>
-  <header class="mod-hero">
-    <h1>{{ mod.name }}</h1>
-    {% if mod.summary.size > 0 %}
-    <p class="tagline">{{ mod.summary }}</p>
-    {% endif %}
-    {% if latest.files %}
-    <ul class="tags" aria-label="Latest release">
-      <li>{{ latest.version }}</li>
-      {% for file in latest.files %}
-      <li>Minecraft {{ file.minecraft }}, {{ file.loader }}</li>
-      {% endfor %}
-    </ul>
-    {% elsif latest.version %}
-    <ul class="tags" aria-label="Latest release">
-      <li>{{ latest.version }}</li>
-      <li>Minecraft {{ latest.minecraft | join: ", " }}</li>
-      {% for loader in latest.loaders %}
-      <li>{{ loader }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  </header>
+  <h1>{{ mod.name }}</h1>
 
   {{ mod.description | markdownify }}
 
@@ -47,7 +26,6 @@ layout: default
 
   {% if latest.version %}
   <section class="latest">
-    <p class="kicker">Latest release</p>
     <h2>{{ latest.version }}</h2>
     {% capture released_on %}{{ latest.date }}{% endcapture %}
     {% if released_on.size > 0 %}
@@ -131,32 +109,17 @@ layout: default
   </section>
   {% endif %}
 
-  <h2>Supported versions</h2>
+  {% if mod.upcoming %}
+  <h2>Not released yet</h2>
   <ul>
-    {% for release in releases %}
-      {% if release.files %}
-        {% for file in release.files %}
-        <li>
-          {{ release.version }}: Minecraft {{ file.minecraft }}, {{ file.loader }}.
-          {% if file.requirements.size > 0 %}
-          Requires {{ file.requirements | join: ", " }}.
-          {% endif %}
-        </li>
-        {% endfor %}
-      {% else %}
-        <li>
-          {{ release.version }}: Minecraft {{ release.minecraft | join: ", " }},
-          {% include loader_list.html loaders=release.loaders %}.
-          {% if release.requirements.size > 0 %}
-          Requires {{ release.requirements | join: ", " }}.
-          {% endif %}
-        </li>
-      {% endif %}
-    {% endfor %}
     {% for item in mod.upcoming %}
-    <li>Minecraft {{ item.minecraft }} for {% include loader_list.html loaders=item.loaders %} is on the way.</li>
+    <li>
+      Minecraft {{ item.minecraft }},
+      {% include loader_list.html loaders=item.loaders %}.
+    </li>
     {% endfor %}
   </ul>
+  {% endif %}
 
   {% if releases.size > 1 %}
   <h2>Older releases</h2>

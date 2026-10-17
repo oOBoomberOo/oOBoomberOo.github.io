@@ -14,7 +14,7 @@ The site lists Seamless Dimensions and Waypoint. Add more by adding data, not by
 
 ## Add a mod
 
-1. Create `_data/mods/<mod-id>.yml` with `id`, `name`, `summary`, and `description`. Optional fields are `source`, `images`, and `upcoming`.
+1. Create `_data/mods/<mod-id>.yml` with `id`, `name`, and `description`. Optional fields are `source`, `images`, and `upcoming`.
 2. Create `_data/releases/<mod-id>.yml` with at least one release.
 3. Create `mods/<mod-id>.html` with `layout: mod` and the same `mod_id`.
 

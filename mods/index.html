@@ -5,7 +5,6 @@ description: Minecraft mods by Boomber.
 permalink: /mods/
 ---
 <h1>Mods</h1>
-<p class="lede">Mods I publish.</p>
 <ul class="entries">
   {% for item in site.data.mods %}
   {% assign mod = item[1] %}
@@ -14,9 +13,6 @@ permalink: /mods/
   <li class="entry">
     {% capture mod_url %}/mods/{{ mod.id }}/{% endcapture %}
     <h2><a href="{{ mod_url | relative_url }}">{{ mod.name }}</a></h2>
-    {% if mod.summary.size > 0 %}
-    <p>{{ mod.summary }}</p>
-    {% endif %}
     {% if latest.files %}
     <ul class="tags">
       {% for file in latest.files %}
