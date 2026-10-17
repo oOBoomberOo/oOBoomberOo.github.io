@@ -11,7 +11,14 @@ layout: default
     {% if mod.summary.size > 0 %}
     <p class="tagline">{{ mod.summary }}</p>
     {% endif %}
-    {% if latest.version %}
+    {% if latest.files %}
+    <ul class="tags" aria-label="Latest release">
+      <li>{{ latest.version }}</li>
+      {% for file in latest.files %}
+      <li>Minecraft {{ file.minecraft }}, {{ file.loader }}</li>
+      {% endfor %}
+    </ul>
+    {% elsif latest.version %}
     <ul class="tags" aria-label="Latest release">
       <li>{{ latest.version }}</li>
       <li>Minecraft {{ latest.minecraft | join: ", " }}</li>
@@ -42,6 +49,41 @@ layout: default
   <section class="latest">
     <p class="kicker">Latest release</p>
     <h2>{{ latest.version }}</h2>
+    {% capture released_on %}{{ latest.date }}{% endcapture %}
+    {% if released_on.size > 0 %}
+    <p class="release-date">Released <time datetime="{{ released_on }}">{{ released_on }}</time></p>
+    {% endif %}
+    {% if latest.files %}
+    <ul class="downloads">
+      {% for file in latest.files %}
+      <li class="download">
+        <h3>Minecraft {{ file.minecraft }}, {{ file.loader }}</h3>
+        {% capture download %}{{ file.download }}{% endcapture %}
+        {% if download.size > 0 %}
+          {% assign href = download %}
+          {% unless href contains "://" %}
+            {% assign href = href | relative_url %}
+          {% endunless %}
+          <a class="button" href="{{ href }}">Download {{ file.loader }} for {{ file.minecraft }}</a>
+        {% else %}
+          <button type="button" class="button" disabled>The jar is not uploaded yet.</button>
+        {% endif %}
+        <dl class="facts">
+          {% if file.requirements.size > 0 %}
+          <dt>Requires</dt>
+          <dd>{{ file.requirements | join: ", " }}</dd>
+          {% endif %}
+          {% capture file_size %}{{ file.file_size }}{% endcapture %}
+          <dt>File size</dt>
+          <dd>{% if file_size.size > 0 %}{{ file_size }} bytes{% else %}Not yet{% endif %}</dd>
+          {% capture sha256 %}{{ file.sha256 }}{% endcapture %}
+          <dt>SHA-256</dt>
+          <dd>{% if sha256.size > 0 %}<code>{{ sha256 }}</code>{% else %}Not yet{% endif %}</dd>
+        </dl>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
     {% capture download %}{{ latest.download }}{% endcapture %}
     {% if download.size > 0 %}
       {% assign href = download %}
@@ -72,12 +114,8 @@ layout: default
       {% capture sha256 %}{{ latest.sha256 }}{% endcapture %}
       <dt>SHA-256</dt>
       <dd>{% if sha256.size > 0 %}<code>{{ sha256 }}</code>{% else %}Not yet{% endif %}</dd>
-      {% capture released_on %}{{ latest.date }}{% endcapture %}
-      {% if released_on.size > 0 %}
-      <dt>Date</dt>
-      <dd><time datetime="{{ released_on }}">{{ released_on }}</time></dd>
-      {% endif %}
     </dl>
+    {% endif %}
     {% if latest.changelog.size > 0 %}
     <h3>Changelog</h3>
     <ul class="changelog">
@@ -86,19 +124,34 @@ layout: default
       {% endfor %}
     </ul>
     {% endif %}
+    {% capture note %}{{ latest.note }}{% endcapture %}
+    {% if note.size > 0 %}
+    <p class="aside">{{ note }}</p>
+    {% endif %}
   </section>
   {% endif %}
 
   <h2>Supported versions</h2>
   <ul>
     {% for release in releases %}
-    <li>
-      {{ release.version }}: Minecraft {{ release.minecraft | join: ", " }},
-      {% include loader_list.html loaders=release.loaders %}.
-      {% if release.requirements.size > 0 %}
-      Requires {{ release.requirements | join: ", " }}.
+      {% if release.files %}
+        {% for file in release.files %}
+        <li>
+          {{ release.version }}: Minecraft {{ file.minecraft }}, {{ file.loader }}.
+          {% if file.requirements.size > 0 %}
+          Requires {{ file.requirements | join: ", " }}.
+          {% endif %}
+        </li>
+        {% endfor %}
+      {% else %}
+        <li>
+          {{ release.version }}: Minecraft {{ release.minecraft | join: ", " }},
+          {% include loader_list.html loaders=release.loaders %}.
+          {% if release.requirements.size > 0 %}
+          Requires {{ release.requirements | join: ", " }}.
+          {% endif %}
+        </li>
       {% endif %}
-    </li>
     {% endfor %}
     {% for item in mod.upcoming %}
     <li>Minecraft {{ item.minecraft }} for {% include loader_list.html loaders=item.loaders %} is on the way.</li>

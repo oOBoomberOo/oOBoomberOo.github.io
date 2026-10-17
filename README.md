@@ -8,10 +8,9 @@ The site currently has two entries: the Seamless Dimensions mod, and Waypoint on
 
 1. Open `_data/releases/<mod-id>.yml`.
 2. Add a new entry at the top. The page prints the list in that order, newest first.
-3. Set `version`, `minecraft`, `loaders`, `requirements`, and `changelog`.
-4. Put the jar in `files/<mod-id>/` and set `download` to `/files/<mod-id>/<filename>.jar`. A full URL is fine too.
-5. Set `sha256` to that file's SHA-256, `file_size` to its size in bytes, and `date` to the day you published it (`YYYY-MM-DD`).
-6. If the jar is not ready, leave `download`, `sha256`, `file_size`, and `date` empty. Do not invent them.
+3. Set `version`, `date` (`YYYY-MM-DD`), and `changelog`.
+4. Put each jar in `files/<mod-id>/`. Under `files`, add one item per jar with `minecraft`, `loader`, `requirements`, `download`, `sha256`, and `file_size`. `download` is a path such as `/files/<mod-id>/<filename>.jar`, or a full URL. `sha256` is that file's SHA-256. `file_size` is the size in bytes.
+5. If a jar is not ready, leave its `download`, `sha256`, and `file_size` empty. Do not invent them.
 
 ## Add a mod
 

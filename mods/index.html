@@ -17,7 +17,13 @@ permalink: /mods/
     {% if mod.summary.size > 0 %}
     <p>{{ mod.summary }}</p>
     {% endif %}
-    {% if latest.version %}
+    {% if latest.files %}
+    <ul class="tags">
+      {% for file in latest.files %}
+      <li>Minecraft {{ file.minecraft }}, {{ file.loader }}</li>
+      {% endfor %}
+    </ul>
+    {% elsif latest.version %}
     <ul class="tags">
       <li>Minecraft {{ latest.minecraft | join: ", " }}</li>
       {% for loader in latest.loaders %}

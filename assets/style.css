@@ -251,14 +251,51 @@ p {
 }
 
 .latest h2 {
-  margin: 0 0 0.85rem;
+  margin: 0;
+}
+
+.release-date {
+  margin: 0.25rem 0 0.9rem;
+  color: var(--muted);
+}
+
+.downloads {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.download {
+  margin: 0;
+  padding: 1rem 0 0.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.download:first-child {
+  border-top: 0;
+  padding-top: 0.15rem;
+}
+
+.download h3 {
+  margin: 0 0 0.7rem;
+}
+
+.download .button {
+  margin-bottom: 0.15rem;
+}
+
+.aside {
+  margin: 1rem 0 0;
+  color: var(--muted);
 }
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18rem;
+  box-sizing: border-box;
+  min-width: min(18rem, 100%);
+  max-width: 100%;
   min-height: 2.75rem;
   padding: 0.6rem 1.15rem;
   border: 1px solid var(--accent);

@@ -90,7 +90,9 @@ class SiteDataTest(unittest.TestCase):
             ],
         )
 
-    def test_only_seamless_dimensions_release_is_a_placeholder(self):
+    def test_seamless_dimensions_1_0_0_jars(self):
+        import hashlib
+
         mod = yaml.safe_load(
             (ROOT / "_data/mods/seamless-dimensions.yml").read_text(encoding="utf-8")
         )
@@ -102,25 +104,62 @@ class SiteDataTest(unittest.TestCase):
         self.assertEqual(mod["name"], "Seamless Dimensions")
         self.assertFalse(mod.get("source"))
         self.assertEqual(mod.get("images") or [], [])
-        self.assertEqual(len(mod["upcoming"]), 1)
-        upcoming = mod["upcoming"][0]
-        self.assertEqual(upcoming["minecraft"], "1.21.1")
-        self.assertEqual(upcoming["loaders"], ["Fabric", "NeoForge"])
+        self.assertFalse(mod.get("upcoming"))
 
         self.assertEqual(len(releases), 1)
         release = releases[0]
         self.assertEqual(release["version"], "1.0.0")
-        self.assertEqual(release["minecraft"], ["26.3"])
-        self.assertEqual(release["loaders"], ["Fabric"])
-        self.assertEqual(release["requirements"], ["Fabric API"])
-        for field in ("download", "sha256", "file_size", "date"):
-            self.assertIn(field, release)
-            self.assertIn(release[field], ("", None))
-        self.assertNotIn("1.21.1", [item for item in release["minecraft"]])
+        self.assertEqual(release["date"], "2026-10-17")
         changelog = " ".join(release["changelog"]).lower()
         for phrase in ("loading screen", "nether", "end", "starfield", "facing"):
             self.assertIn(phrase, changelog)
-        self.assertNotRegex(" ".join(release["changelog"]), r"20\d{2}")
+        self.assertIn("1.21.1", release["note"])
+        self.assertIn("Sodium", release["note"])
+        self.assertIn("Iris", release["note"])
+
+        expected = {
+            ("26.3", "Fabric"): {
+                "download": "/files/seamless-dimensions/seamless-dimensions-1.0.0.jar",
+                "file_size": 139426,
+                "sha256": "7acaeceecea180c38ef3aeeeea7af708aa7fe12f9172db127808b91f6e942cc6",
+                "requirements": [
+                    "Fabric API",
+                    "Fabric Loader 0.20.0 or newer",
+                    "Java 25 or newer",
+                ],
+            },
+            ("1.21.1", "Fabric"): {
+                "download": "/files/seamless-dimensions/seamless_dimensions-fabric-1.21.1-1.0.0.jar",
+                "file_size": 123217,
+                "sha256": "b5680a4078ceac28bd288dddc886b4561906401c6b611faf0e4ffe15e7c8892e",
+                "requirements": [
+                    "Fabric API",
+                    "Fabric Loader 0.16.14 or newer",
+                    "Java 21 or newer",
+                ],
+            },
+            ("1.21.1", "NeoForge"): {
+                "download": "/files/seamless-dimensions/seamless_dimensions-neoforge-1.21.1-1.0.0.jar",
+                "file_size": 122909,
+                "sha256": "f54c8a0b3862ec88934c22de6e60644f47501be68abf5276275f03e91c56f72c",
+                "requirements": ["NeoForge 21.1.262 or newer"],
+            },
+        }
+        self.assertEqual(len(release["files"]), 3)
+        seen = set()
+        for item in release["files"]:
+            key = (item["minecraft"], item["loader"])
+            seen.add(key)
+            want = expected[key]
+            self.assertEqual(item["download"], want["download"])
+            self.assertEqual(item["file_size"], want["file_size"])
+            self.assertEqual(item["sha256"], want["sha256"])
+            self.assertEqual(item["requirements"], want["requirements"])
+            path = ROOT / item["download"].lstrip("/")
+            data = path.read_bytes()
+            self.assertEqual(len(data), item["file_size"])
+            self.assertEqual(hashlib.sha256(data).hexdigest(), item["sha256"])
+        self.assertEqual(seen, set(expected))
 
 
 class BuiltSiteTest(unittest.TestCase):
@@ -169,11 +208,39 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("Fabric API", mod)
         self.assertIn("1.21.1", mod)
         self.assertIn("NeoForge", mod)
-        self.assertIn("The jar is not uploaded yet.", mod)
         self.assertIn("starfield", mod)
-        self.assertNotRegex(mod, r"\b[0-9a-f]{64}\b")
-        self.assertNotRegex(mod, r"20\d{2}-\d{2}-\d{2}")
+        self.assertIn("2026-10-17", mod)
+        self.assertIn("Sodium and Iris have not been tested with the 1.21.1 jars yet.", mod)
+        self.assertIn("Fabric Loader 0.20.0 or newer", mod)
+        self.assertIn("Fabric Loader 0.16.14 or newer", mod)
+        self.assertIn("Java 25 or newer", mod)
+        self.assertIn("Java 21 or newer", mod)
+        self.assertIn("NeoForge 21.1.262 or newer", mod)
+        self.assertNotIn("The jar is not uploaded yet.", mod)
+        self.assertNotIn("on the way", mod.lower())
+        self.assertNotIn(">Not yet<", mod)
+        self.assertNotIn("disabled", mod)
         self.assertNotIn("<img", mod.lower())
+        for href, digest, size in (
+            (
+                "/files/seamless-dimensions/seamless-dimensions-1.0.0.jar",
+                "7acaeceecea180c38ef3aeeeea7af708aa7fe12f9172db127808b91f6e942cc6",
+                "139426 bytes",
+            ),
+            (
+                "/files/seamless-dimensions/seamless_dimensions-fabric-1.21.1-1.0.0.jar",
+                "b5680a4078ceac28bd288dddc886b4561906401c6b611faf0e4ffe15e7c8892e",
+                "123217 bytes",
+            ),
+            (
+                "/files/seamless-dimensions/seamless_dimensions-neoforge-1.21.1-1.0.0.jar",
+                "f54c8a0b3862ec88934c22de6e60644f47501be68abf5276275f03e91c56f72c",
+                "122909 bytes",
+            ),
+        ):
+            self.assertIn(f'href="{href}"', mod)
+            self.assertIn(digest, mod)
+            self.assertIn(size, mod)
 
         https_links = external_links(projects)
         self.assertEqual(https_links, ["https://waypoint.boomber.xyz/"])
@@ -188,14 +255,14 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn('rel="icon"', home)
         self.assertIn('class="entry"', mods)
         self.assertIn('class="tags"', mods)
-        self.assertIn("Minecraft 26.3", mods)
-        self.assertIn(">Fabric<", mods)
+        self.assertIn("Minecraft 26.3, Fabric", mods)
+        self.assertIn("Minecraft 1.21.1, Fabric", mods)
+        self.assertIn("Minecraft 1.21.1, NeoForge", mods)
         self.assertIn('class="latest"', mod)
         self.assertIn('class="facts"', mod)
         self.assertIn('class="changelog"', mod)
-        self.assertIn("disabled", mod)
         self.assertIn(">SHA-256<", mod)
-        self.assertIn(">Not yet<", mod)
+        self.assertIn('class="button"', mod)
 
     def test_stylesheet_stays_plain(self):
         css = self.read("assets/style.css").lower()
@@ -205,6 +272,7 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("source serif 4", css)
         self.assertIn("focus-visible", css)
         self.assertIn("small-caps", css)
+        self.assertIn("box-sizing: border-box", css)
 
 
 if __name__ == "__main__":

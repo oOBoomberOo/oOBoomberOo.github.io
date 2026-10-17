@@ -4,11 +4,6 @@ summary: Removes the loading screen when you change dimension.
 # Leave blank when the repository should not be linked.
 source: ""
 images: []
-upcoming:
-  - minecraft: "1.21.1"
-    loaders:
-      - Fabric
-      - NeoForge
 description: |
   Seamless Dimensions removes the loading screen when you change dimension. The destination world loads in the background, so Nether and End portals take you straight through with no wait.
 
