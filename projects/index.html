@@ -5,11 +5,11 @@ description: Other projects by Boomber.
 permalink: /projects/
 ---
 <h1>Projects</h1>
-<p>Other things I've made.</p>
-<ul class="listing">
+<p class="lede">Other things I've made.</p>
+<ul class="entries">
   {% for project in site.data.projects %}
-  <li>
-    <a href="{{ project.url }}">{{ project.name }}</a>
+  <li class="entry">
+    <h2><a href="{{ project.url }}">{{ project.name }}</a></h2>
     {% if project.summary.size > 0 %}
     <p>{{ project.summary }}</p>
     {% endif %}

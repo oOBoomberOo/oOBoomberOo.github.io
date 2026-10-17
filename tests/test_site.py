@@ -23,6 +23,15 @@ FORBIDDEN = (
 )
 
 
+def external_links(html):
+    links = re.findall(r'href="(https://[^"]+)"', html)
+    return [
+        link
+        for link in links
+        if "fonts.googleapis.com" not in link and "fonts.gstatic.com" not in link
+    ]
+
+
 def jekyll_env():
     gem_user = subprocess.check_output(["ruby", "-e", "print Gem.user_dir"], text=True).strip()
     env = os.environ.copy()
@@ -162,26 +171,40 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("NeoForge", mod)
         self.assertIn("The jar is not uploaded yet.", mod)
         self.assertIn("starfield", mod)
-        self.assertNotIn("SHA-256", mod)
         self.assertNotRegex(mod, r"\b[0-9a-f]{64}\b")
         self.assertNotRegex(mod, r"20\d{2}-\d{2}-\d{2}")
         self.assertNotIn("<img", mod.lower())
 
-        https_links = re.findall(r'href="(https://[^"]+)"', projects)
+        https_links = external_links(projects)
         self.assertEqual(https_links, ["https://waypoint.boomber.xyz/"])
         self.assertIn("A trip planner.", projects)
+        self.assertIn('class="entry"', projects)
         self.assertEqual(len(re.findall(r"<h1", projects)), 1)
 
         for page in (home, mods, mod):
             self.assertNotIn("waypoint.boomber.xyz", page)
-            self.assertEqual(re.findall(r'href="(https://[^"]+)"', page), [])
+            self.assertEqual(external_links(page), [])
+
+        self.assertIn('rel="icon"', home)
+        self.assertIn('class="entry"', mods)
+        self.assertIn('class="tags"', mods)
+        self.assertIn("Minecraft 26.3", mods)
+        self.assertIn(">Fabric<", mods)
+        self.assertIn('class="latest"', mod)
+        self.assertIn('class="facts"', mod)
+        self.assertIn('class="changelog"', mod)
+        self.assertIn("disabled", mod)
+        self.assertIn(">SHA-256<", mod)
+        self.assertIn(">Not yet<", mod)
 
     def test_stylesheet_stays_plain(self):
         css = self.read("assets/style.css").lower()
         for banned in ("gradient", "keyframes", "animation", "neon", "box-shadow"):
             self.assertNotIn(banned, css)
-        self.assertIn("background: #fff", css)
-        self.assertIn("georgia", css)
+        self.assertIn("background: #f3eee4", css)
+        self.assertIn("source serif 4", css)
+        self.assertIn("focus-visible", css)
+        self.assertIn("small-caps", css)
 
 
 if __name__ == "__main__":

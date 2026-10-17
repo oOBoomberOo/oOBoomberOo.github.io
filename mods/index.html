@@ -5,15 +5,25 @@ description: Minecraft mods by Boomber.
 permalink: /mods/
 ---
 <h1>Mods</h1>
-<p>These are the mods I publish here. Each mod has a page for its versions and releases.</p>
-<ul class="listing">
+<p class="lede">These are the mods I publish here. Each mod has a page for its versions and releases.</p>
+<ul class="entries">
   {% for item in site.data.mods %}
   {% assign mod = item[1] %}
-  <li>
+  {% assign releases = site.data.releases[mod.id] %}
+  {% assign latest = releases | first %}
+  <li class="entry">
     {% capture mod_url %}/mods/{{ mod.id }}/{% endcapture %}
-    <a href="{{ mod_url | relative_url }}">{{ mod.name }}</a>
+    <h2><a href="{{ mod_url | relative_url }}">{{ mod.name }}</a></h2>
     {% if mod.summary.size > 0 %}
     <p>{{ mod.summary }}</p>
+    {% endif %}
+    {% if latest.version %}
+    <ul class="tags">
+      <li>Minecraft {{ latest.minecraft | join: ", " }}</li>
+      {% for loader in latest.loaders %}
+      <li>{{ loader }}</li>
+      {% endfor %}
+    </ul>
     {% endif %}
   </li>
   {% endfor %}
