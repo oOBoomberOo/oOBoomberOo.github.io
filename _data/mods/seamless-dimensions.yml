@@ -3,9 +3,4 @@ name: Seamless Dimensions
 # Leave blank when the repository should not be linked.
 source: ""
 images: []
-description: |
-  Seamless Dimensions removes the loading screen when you change dimension.
-
-  Nether portals take you straight through with no loading screen. Jumping into an End portal drops you through the starry End void until you land on the island, and /tp between dimensions is instant too.
-
-  Works on the client and the server. On 26.3 I only have Fabric, which needs Fabric API, Fabric Loader 0.20.0 or newer, and Java 25. On 1.21.1 there's Fabric and NeoForge. The Fabric one needs Fabric API, Fabric Loader 0.16.14 or newer, and Java 21. NeoForge needs 21.1.262 or newer.
+description: Make switching dimensions seamless without any loading screens.

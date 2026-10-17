@@ -103,18 +103,10 @@ class SiteDataTest(unittest.TestCase):
         self.assertEqual(mod["id"], "seamless-dimensions")
         self.assertEqual(mod["name"], "Seamless Dimensions")
         self.assertNotIn("summary", mod)
-        description = mod["description"]
-        self.assertIn("removes the loading screen when you change dimension", description)
-        self.assertIn("Nether portals take you straight through", description)
-        self.assertIn("starry End void", description)
-        self.assertIn("/tp between dimensions is instant too", description)
-        self.assertIn("Works on the client and the server.", description)
-        self.assertIn("Fabric Loader 0.20.0 or newer", description)
-        self.assertIn("Java 25", description)
-        self.assertIn("Fabric Loader 0.16.14 or newer", description)
-        self.assertIn("Java 21", description)
-        self.assertIn("NeoForge needs 21.1.262 or newer", description)
-        self.assertNotIn("—", description)
+        self.assertEqual(
+            mod["description"],
+            "Make switching dimensions seamless without any loading screens.",
+        )
         self.assertFalse(mod.get("source"))
         self.assertEqual(mod.get("images") or [], [])
         self.assertFalse(mod.get("upcoming"))
@@ -126,25 +118,11 @@ class SiteDataTest(unittest.TestCase):
         self.assertEqual(
             release["changelog"],
             [
-                "First release.",
-                "No loading screen when going through Nether and End portals.",
-                "Falling into the End portal now shows the starry void.",
-                "Works with /tp between dimensions too.",
+                "Remove loading screen when going through the Nether and End Portal.",
+                "Preload dimension when player is near a portal, allowing much faster dimension switch.",
             ],
         )
         self.assertEqual(release["note"], "Not tested with Sodium or Iris yet.")
-        player_copy = mod["description"] + " " + " ".join(release["changelog"]) + " " + release["note"]
-        for phrase in (
-            "in the background",
-            "facing",
-            "rotation",
-            "starfield",
-            "mesh",
-            "preload",
-            "tether",
-            "renderer",
-        ):
-            self.assertNotIn(phrase, player_copy.lower())
 
         expected = {
             ("26.3", "Fabric"): {
@@ -237,11 +215,10 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("Fabric API", mod)
         self.assertIn("1.21.1", mod)
         self.assertIn("NeoForge", mod)
-        self.assertIn("Nether portals take you straight through", mod)
-        self.assertIn("starry End void", mod)
-        self.assertIn("Works on the client and the server.", mod)
-        self.assertIn("First release.", mod)
-        self.assertIn("Works with /tp between dimensions too.", mod)
+        self.assertIn("Make switching dimensions seamless without any loading screens.", mod)
+        self.assertIn("Remove loading screen when going through the Nether and End Portal.", mod)
+        self.assertIn("Preload dimension when player is near a portal, allowing much faster dimension switch.", mod)
+        self.assertNotIn("First release.", mod)
         self.assertIn("2026-10-17", mod)
         self.assertIn("Not tested with Sodium or Iris yet.", mod)
         self.assertNotIn("in the background", mod.lower())

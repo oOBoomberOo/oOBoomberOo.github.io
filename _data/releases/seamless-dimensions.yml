@@ -7,10 +7,8 @@
   date: "2026-10-17"
   note: Not tested with Sodium or Iris yet.
   changelog:
-    - First release.
-    - No loading screen when going through Nether and End portals.
-    - Falling into the End portal now shows the starry void.
-    - Works with /tp between dimensions too.
+    - Remove loading screen when going through the Nether and End Portal.
+    - Preload dimension when player is near a portal, allowing much faster dimension switch.
   files:
     - minecraft: "26.3"
       loader: Fabric
