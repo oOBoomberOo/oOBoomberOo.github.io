@@ -2,7 +2,7 @@
 
 Personal site for Boomber. GitHub Pages builds it with Jekyll. There is no separate build step.
 
-The site lists Seamless Dimensions and Waypoint. Add more by adding data, not by editing the layout.
+The site lists Seamless Dimensions, the toolbox-fix build of Immersive Engineering, and Waypoint. Add more by adding data, not by editing the layout.
 
 ## Add a release
 

@@ -40,7 +40,7 @@ def jekyll_env():
 
 
 class SiteDataTest(unittest.TestCase):
-    def test_data_files_are_only_the_two_items(self):
+    def test_data_files_are_exactly_the_expected_set(self):
         files = sorted(
             path.relative_to(ROOT).as_posix()
             for path in (ROOT / "_data").rglob("*")
@@ -49,11 +49,29 @@ class SiteDataTest(unittest.TestCase):
         self.assertEqual(
             files,
             [
+                "_data/mods/immersive-engineering.yml",
                 "_data/mods/seamless-dimensions.yml",
                 "_data/projects.yml",
+                "_data/releases/immersive-engineering.yml",
                 "_data/releases/seamless-dimensions.yml",
             ],
         )
+
+    def test_every_release_file_matches_its_checksum(self):
+        import hashlib
+
+        for path in sorted((ROOT / "_data" / "releases").glob("*.yml")):
+            releases = yaml.safe_load(path.read_text(encoding="utf-8")) or []
+            for release in releases:
+                for item in release.get("files") or []:
+                    download = item.get("download")
+                    if not download:
+                        continue
+                    data = (ROOT / download.lstrip("/")).read_bytes()
+                    self.assertEqual(len(data), item["file_size"], download)
+                    self.assertEqual(
+                        hashlib.sha256(data).hexdigest(), item["sha256"], download
+                    )
 
     def test_no_cname_and_no_github_fetch_script(self):
         self.assertFalse((ROOT / "CNAME").exists())

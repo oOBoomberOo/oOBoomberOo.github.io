@@ -1,0 +1,9 @@
+id: immersive-engineering
+name: Immersive Engineering (Toolbox Fix)
+# Leave blank when the repository should not be linked.
+source: https://github.com/BluSunrize/ImmersiveEngineering
+images: []
+description: |
+  An unofficial build of [Immersive Engineering](https://github.com/BluSunrize/ImmersiveEngineering)
+  by BluSunrize and the other contributors. It is the 1.21.1 branch with one extra fix for the
+  Engineer's Toolbox; everything else is unchanged.
