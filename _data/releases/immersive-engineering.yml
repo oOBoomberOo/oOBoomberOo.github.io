@@ -3,17 +3,17 @@
 # download is a site path such as /files/immersive-engineering/name.jar, or a full URL.
 # sha256 is that file's hex digest. file_size is the size in bytes. date is YYYY-MM-DD.
 # Leave a download empty only when that jar is not ready. Do not invent checksums or sizes.
-- version: "12.4.2-194.toolboxfix"
+- version: "12.4.2-194"
   date: "2026-10-23"
-  note: Unofficial build. The toolbox fix is not in the upstream release, so do not report it there.
+  note: Built from the fork's toolbox-shift-click-fix branch. It keeps the upstream version number, so do not report it upstream.
   changelog:
     - Fix shift-clicking a stack into an Engineer's Toolbox held in the inventory deleting items when that slot already contains the same item.
   files:
     - minecraft: "1.21.1"
       loader: NeoForge
-      download: /files/immersive-engineering/ImmersiveEngineering-1.21.1-12.4.2-194.toolboxfix.jar
-      file_size: 14213908
-      sha256: 57f754f54a9b13ba5e9c511c0152345e2aac1b65eeeea21c0e7af242a222d8c8
+      download: /files/immersive-engineering/ImmersiveEngineering-1.21.1-12.4.2-194.jar
+      file_size: 14213899
+      sha256: 6650181f5b540662a6f1142c0c3ff3dc1e225ebc1a7964f7c2e9e4251d44e701
       requirements:
         - NeoForge 21.1.164 or newer
         - Java 21 or newer
