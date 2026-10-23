@@ -1,7 +1,7 @@
 id: immersive-engineering
 name: Immersive Engineering (Toolbox Fix)
 # Leave blank when the repository should not be linked.
-source: https://github.com/BluSunrize/ImmersiveEngineering
+source: https://github.com/oOBoomberOo/ImmersiveEngineering/tree/toolbox-shift-click-fix
 images: []
 description: |
   An unofficial build of [Immersive Engineering](https://github.com/BluSunrize/ImmersiveEngineering)
