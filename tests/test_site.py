@@ -49,9 +49,11 @@ class SiteDataTest(unittest.TestCase):
         self.assertEqual(
             files,
             [
+                "_data/mods/antique-road.yml",
                 "_data/mods/immersive-engineering.yml",
                 "_data/mods/seamless-dimensions.yml",
                 "_data/projects.yml",
+                "_data/releases/antique-road.yml",
                 "_data/releases/immersive-engineering.yml",
                 "_data/releases/seamless-dimensions.yml",
             ],

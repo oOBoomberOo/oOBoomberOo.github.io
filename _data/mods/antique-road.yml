@@ -1,0 +1,6 @@
+id: antique-road
+name: Antique Road
+# Left blank because the repository is private; linking it would 404.
+source: ""
+images: []
+description: Draws RoadWeaver's generated roads on the Antique Atlas 4 map, in the atlas' own hand-drawn style.

@@ -1,0 +1,35 @@
+# Newest release first. To publish another one, add an entry above this list.
+# A release can include several jars. Put each one under files.
+# download is a site path such as /files/antique-road/name.jar, or a full URL.
+# sha256 is that file's hex digest. file_size is the size in bytes. date is YYYY-MM-DD.
+# Leave a download empty only when that jar is not ready. Do not invent checksums or sizes.
+- version: "1.0.0"
+  date: "2026-11-02"
+  note: The NeoForge build needs Sinytra Connector, because Antique Atlas 4 and Surveyor are Fabric mods.
+  changelog:
+    - Draw RoadWeaver's roads on the Antique Atlas 4 map, including the handheld atlas.
+    - Match the atlas art by keeping roads on the tile pixel grid, with an ink outline around a parchment surface.
+    - Only draw over chunks the atlas has explored, and stay silent when the server denies RoadWeaver's map access.
+  files:
+    - minecraft: "1.21.1"
+      loader: Fabric
+      download: /files/antique-road/antique-road-fabric-1.0.0.jar
+      file_size: 27620
+      sha256: 8e3c7cb14ac472dadc8327f7efbc457d4415805e9316b94b2c76b3947ddc4aba
+      requirements:
+        - Fabric API
+        - Antique Atlas 4 3.1.x and Surveyor
+        - RoadWeaver 2.3.x
+        - Fabric Loader 0.16.10 or newer
+        - Java 21 or newer
+    - minecraft: "1.21.1"
+      loader: NeoForge
+      download: /files/antique-road/antique-road-neoforge-1.0.0.jar
+      file_size: 27379
+      sha256: 649007615c05404c4db9a3f3b8fbb846b4464230af1fcd79928805d7a46ef25f
+      requirements:
+        - NeoForge 21.1.169 or newer
+        - Sinytra Connector and Forgified Fabric API
+        - Antique Atlas 4 3.1.x and Surveyor
+        - RoadWeaver 2.3.x NeoForge build
+        - Java 21 or newer
