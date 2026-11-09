@@ -216,13 +216,13 @@ class SiteDataTest(unittest.TestCase):
         expected = {
             "Fabric": {
                 "download": "/files/seedgen-postprocess-fix/seedgen-postprocess-fix-fabric-1.0.0.jar",
-                "file_size": 3918,
-                "sha256": "271f843ab99405bf56d5ab047d9629fec34ac0a79595e2f7b6bc0d14300d35bc",
+                "file_size": 5487,
+                "sha256": "5472d1126de7549ee88bbe59ec01392a29fc8f9e95f4c5b50c897b34e66fd758",
             },
             "NeoForge": {
                 "download": "/files/seedgen-postprocess-fix/seedgen-postprocess-fix-neoforge-1.0.0.jar",
-                "file_size": 4200,
-                "sha256": "63810b0bbd2d97f72b52f1a593e26a9ec821f38e88d98ac2e5a2900f19efa6ee",
+                "file_size": 5796,
+                "sha256": "8c4d51ea7cb9ef9b42fb2fbb1e0a1a12a0cea3685eb4f13f24785c8effc4756e",
             },
         }
         self.assertEqual(len(release["files"]), 2)
