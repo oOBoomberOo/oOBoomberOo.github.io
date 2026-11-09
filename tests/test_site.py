@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checks that the site stays limited to Seamless Dimensions and Waypoint."""
+"""Checks that the site data, files, and built pages stay consistent."""
 
 import os
 import re
@@ -52,10 +52,12 @@ class SiteDataTest(unittest.TestCase):
                 "_data/mods/antique-road.yml",
                 "_data/mods/immersive-engineering.yml",
                 "_data/mods/seamless-dimensions.yml",
+                "_data/mods/seedgen-postprocess-fix.yml",
                 "_data/projects.yml",
                 "_data/releases/antique-road.yml",
                 "_data/releases/immersive-engineering.yml",
                 "_data/releases/seamless-dimensions.yml",
+                "_data/releases/seedgen-postprocess-fix.yml",
             ],
         )
 
@@ -188,6 +190,55 @@ class SiteDataTest(unittest.TestCase):
             self.assertEqual(hashlib.sha256(data).hexdigest(), item["sha256"])
         self.assertEqual(seen, set(expected))
 
+    def test_seedgen_postprocess_fix_1_0_0_jars(self):
+        import hashlib
+
+        mod = yaml.safe_load(
+            (ROOT / "_data/mods/seedgen-postprocess-fix.yml").read_text(encoding="utf-8")
+        )
+        releases = yaml.safe_load(
+            (ROOT / "_data/releases/seedgen-postprocess-fix.yml").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertEqual(mod["id"], "seedgen-postprocess-fix")
+        self.assertEqual(mod["name"], "SeedGen Post-Processing Fix")
+        self.assertFalse(mod.get("source"))
+        self.assertEqual(mod.get("images") or [], [])
+        self.assertFalse(mod.get("upcoming"))
+
+        self.assertEqual(len(releases), 1)
+        release = releases[0]
+        self.assertEqual(release["version"], "1.0.0")
+        self.assertEqual(release["date"], "2026-11-09")
+
+        expected = {
+            "Fabric": {
+                "download": "/files/seedgen-postprocess-fix/seedgen-postprocess-fix-fabric-1.0.0.jar",
+                "file_size": 3918,
+                "sha256": "271f843ab99405bf56d5ab047d9629fec34ac0a79595e2f7b6bc0d14300d35bc",
+            },
+            "NeoForge": {
+                "download": "/files/seedgen-postprocess-fix/seedgen-postprocess-fix-neoforge-1.0.0.jar",
+                "file_size": 4200,
+                "sha256": "63810b0bbd2d97f72b52f1a593e26a9ec821f38e88d98ac2e5a2900f19efa6ee",
+            },
+        }
+        self.assertEqual(len(release["files"]), 2)
+        seen = set()
+        for item in release["files"]:
+            want = expected[item["loader"]]
+            seen.add(item["loader"])
+            self.assertEqual(item["minecraft"], "1.20.1 - 26.3")
+            self.assertEqual(item["download"], want["download"])
+            self.assertEqual(item["file_size"], want["file_size"])
+            self.assertEqual(item["sha256"], want["sha256"])
+            data = (ROOT / item["download"].lstrip("/")).read_bytes()
+            self.assertEqual(len(data), want["file_size"])
+            self.assertEqual(hashlib.sha256(data).hexdigest(), want["sha256"])
+        self.assertEqual(seen, set(expected))
+
 
 class BuiltSiteTest(unittest.TestCase):
     @classmethod
@@ -210,10 +261,11 @@ class BuiltSiteTest(unittest.TestCase):
         home = self.read("index.html")
         mods = self.read("mods/index.html")
         mod = self.read("mods/seamless-dimensions/index.html")
+        seedgen = self.read("mods/seedgen-postprocess-fix/index.html")
         projects = self.read("projects/index.html")
         missing = self.read("404.html")
 
-        for page in (home, mods, mod, projects, missing):
+        for page in (home, mods, mod, seedgen, projects, missing):
             self.assertIn('lang="en"', page)
             self.assertIn('name="viewport"', page)
             self.assertIn('href="#content"', page)
@@ -239,6 +291,8 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("<title>Mods · Boomber's Projects</title>", mods)
         self.assertIn('href="/mods/seamless-dimensions/"', mods)
         self.assertIn("Seamless Dimensions", mods)
+        self.assertIn('href="/mods/seedgen-postprocess-fix/"', mods)
+        self.assertIn("SeedGen Post-Processing Fix", mods)
 
         self.assertIn("Minecraft 26.3", mod)
         self.assertIn("Fabric API", mod)
@@ -263,6 +317,19 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn("Java 25 or newer", mod)
         self.assertIn("Java 21 or newer", mod)
         self.assertIn("NeoForge 21.1.262 or newer", mod)
+        self.assertIn("SeedGen Post-Processing Fix", seedgen)
+        self.assertIn("Minecraft 1.20.1 - 26.3, Fabric", seedgen)
+        self.assertIn("Minecraft 1.20.1 - 26.3, NeoForge", seedgen)
+        self.assertIn("Distant Horizons", seedgen)
+        self.assertIn("Java 17 or newer", seedgen)
+        self.assertIn(
+            'href="/files/seedgen-postprocess-fix/seedgen-postprocess-fix-fabric-1.0.0.jar"',
+            seedgen,
+        )
+        self.assertIn(
+            'href="/files/seedgen-postprocess-fix/seedgen-postprocess-fix-neoforge-1.0.0.jar"',
+            seedgen,
+        )
         self.assertNotIn("The jar is not uploaded yet.", mod)
         self.assertNotIn("on the way", mod.lower())
         self.assertNotIn(">Not yet<", mod)
@@ -295,7 +362,7 @@ class BuiltSiteTest(unittest.TestCase):
         self.assertIn('class="entry"', projects)
         self.assertEqual(len(re.findall(r"<h1", projects)), 1)
 
-        for page in (home, mods, mod):
+        for page in (home, mods, mod, seedgen):
             self.assertNotIn("waypoint.boomber.xyz", page)
             self.assertEqual(external_links(page), [])
 

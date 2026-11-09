@@ -1,0 +1,32 @@
+# Newest release first. To publish another one, add an entry above this list.
+# A release can include several jars. Put each one under files.
+# download is a site path such as /files/seedgen-postprocess-fix/name.jar, or a full URL.
+# sha256 is that file's hex digest. file_size is the size in bytes. date is YYYY-MM-DD.
+# Leave a download empty only when that jar is not ready. Do not invent checksums or sizes.
+- version: "1.0.0"
+  date: "2026-11-09"
+  note: The Fabric jar is tested in-game. The NeoForge jar is compile-tested only, so report anything that breaks.
+  changelog:
+    - Stop Distant Horizons SeedGen from writing the unsupported post-processing warning for every block it paints.
+    - Leave every other log message untouched.
+  files:
+    - minecraft: "1.20.1 - 26.3"
+      loader: Fabric
+      download: /files/seedgen-postprocess-fix/seedgen-postprocess-fix-fabric-1.0.0.jar
+      file_size: 3918
+      sha256: 271f843ab99405bf56d5ab047d9629fec34ac0a79595e2f7b6bc0d14300d35bc
+      requirements:
+        - Distant Horizons
+        - SeedGen
+        - Fabric Loader 0.15.0 or newer
+        - Java 17 or newer
+    - minecraft: "1.20.1 - 26.3"
+      loader: NeoForge
+      download: /files/seedgen-postprocess-fix/seedgen-postprocess-fix-neoforge-1.0.0.jar
+      file_size: 4200
+      sha256: 63810b0bbd2d97f72b52f1a593e26a9ec821f38e88d98ac2e5a2900f19efa6ee
+      requirements:
+        - Distant Horizons
+        - SeedGen
+        - NeoForge 47.1 or newer
+        - Java 17 or newer

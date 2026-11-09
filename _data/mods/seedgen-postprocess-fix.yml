@@ -1,0 +1,6 @@
+id: seedgen-postprocess-fix
+name: SeedGen Post-Processing Fix
+# Left blank because the site does not link out from mod pages.
+source: ""
+images: []
+description: Stops Distant Horizons SeedGen from flooding the log with the vanilla unsupported post-processing warning.
